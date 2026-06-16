@@ -229,9 +229,11 @@ Su pedido será preparado en breve.`;
 <h1
   style={{
     color: "#ffffff",
-    fontSize: "48px",
+    fontSize: "clamp(32px, 7vw, 48px)",
     marginTop: "20px",
     marginBottom: "10px",
+    lineHeight: "1.1",
+    padding: "0 10px",
   }}
 >
   Las pizzas más tecnológicas de Tabasco
