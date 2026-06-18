@@ -16,6 +16,30 @@ function App() {
       "12 PM - 11 PM",
   });
 
+  const [promociones,
+  setPromociones] =
+  useState([]);
+
+useEffect(() => {
+
+  const guardadas =
+    localStorage.getItem(
+      "apex_promociones"
+    );
+
+  if (guardadas) {
+
+    setPromociones(
+      JSON.parse(
+        guardadas
+      )
+    );
+
+  }
+
+}, []);
+
+
 useEffect(() => {
 
   const guardada =
@@ -255,19 +279,37 @@ Su pedido será preparado en breve.`;
         }}
       >
 
-        <h2>🔥 Promociones del Día</h2>
+       <h2>🔥 Promociones del Día</h2>
 
-<div>
-  🍕 2x1 Pepperoni
-</div>
+{promociones.length === 0 ? (
 
-<div>
-  🥤 Pizza Familiar + Refresco Gratis
-</div>
+  <div
+    style={{
+      marginTop: "20px",
+      color: "#999",
+    }}
+  >
+    No hay promociones activas
+  </div>
 
-<div>
-  🚀 Combo Apex Suprema
-</div>
+) : (
+
+  promociones.map(
+    (promo, index) => (
+
+      <div
+        key={index}
+        style={{
+          marginTop: "10px",
+        }}
+      >
+        🔥 {promo.nombre}
+      </div>
+
+    )
+  )
+
+)}
    
  <img
   src="/logo-apex.png"
@@ -617,39 +659,7 @@ Su pedido será preparado en breve.`;
 >
   📲 Enviar Pedido
 
-</button>
-
-
-  <h2
-    style={{
-      textAlign: "center",
-      color: "#ff3f6c",
-      marginBottom: "30px",
-    }}
-  >
-    🔥 Promociones de Hoy
-  </h2>
-
-  <div
-    style={{
-      display: "grid",
-      gridTemplateColumns:
-        "repeat(auto-fit,minmax(250px,1fr))",
-      gap: "20px",
-    }}
-  >
-    <div className="promo-card">
-      🍕 2x1 Pepperoni
-    </div>
-
-    <div className="promo-card">
-      🥤 Familiar + Refresco Gratis
-    </div>
-
-    <div className="promo-card">
-      🚀 Combo Apex Suprema
-    </div>
-  </div>
+</button>  
 </section>
 
 <section
