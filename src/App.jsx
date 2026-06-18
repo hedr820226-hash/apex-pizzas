@@ -1,5 +1,60 @@
-import { useState } from "react";
+import {
+  useState,
+  useEffect
+} from "react";
 function App() {
+  const [configuracion,
+  setConfiguracion] =
+  useState({
+    negocio:
+      "Apex Pizzas",
+    whatsapp:
+      "9131091251",
+    direccion:
+      "Cunduacán, Tabasco",
+    horario:
+      "12 PM - 11 PM",
+  });
+
+useEffect(() => {
+
+  const guardada =
+    localStorage.getItem(
+      "apex_configuracion"
+    );
+
+  if (guardada) {
+
+    setConfiguracion(
+      JSON.parse(
+        guardada
+      )
+    );
+
+  }
+
+}, []);
+
+useEffect(() => {
+
+  const guardados =
+    localStorage.getItem(
+      "apex_productos"
+    );
+
+  if (guardados) {
+
+    setProductos(
+      JSON.parse(
+        guardados
+      )
+    );
+
+  }
+
+}, []);
+
+const [productos, setProductos] =useState([]);
   const [carrito, setCarrito] = useState([]);
     const [nombre, setNombre] = useState("");
 const [telefono, setTelefono] = useState("");
@@ -145,7 +200,9 @@ Su pedido será preparado en breve.`;
   );
 };
   const whatsapp =
-    "https://wa.me/529131091251?text=Hola%20quiero%20hacer%20un%20pedido%20en%20Apex%20Pizzas";
+`https://wa.me/52${configuracion.whatsapp}?text=Hola%20quiero%20hacer%20un%20pedido%20en%20${encodeURIComponent(
+  configuracion.negocio
+)}`;
 
   return (
     <div
@@ -238,7 +295,9 @@ Su pedido será preparado en breve.`;
 >
   Las pizzas más tecnológicas de Tabasco
 </h1>
-
+<h3>
+  {configuracion.negocio}
+</h3>
 <p
   style={{
     color: "#cfcfcf",
@@ -629,14 +688,9 @@ Su pedido será preparado en breve.`;
             marginTop: "40px",
           }}
         >
-          {[
-  ["Pepperoni", 189],
-  ["Hawaiana", 199],
-  ["Mexicana", 209],
-  ["Suprema", 249],
-].map((pizza) => (
+          {productos.map((producto, index) => (
             <div
-              key={pizza[0]}
+              key={index}
               style={{
                 background: "#111",
                 border: "1px solid #222",
@@ -645,20 +699,34 @@ Su pedido será preparado en breve.`;
                 textAlign: "center",
               }}
             >
-              <h3>{pizza[0]}</h3>
+  <img
+  src="/pepperoni.jpg"
+  alt={producto.nombre}
+  style={{
+    width: "100%",
+    height: "180px",
+    objectFit: "cover",
+    borderRadius: "15px",
+    marginBottom: "15px",
+  }}
+/>
+              <h3>{producto.nombre}</h3>
 
-              <p
-                style={{
-                  color: "#ff3f6c",
-                  fontSize: "22px",
-                }}
-              >
-                {pizza[1]}
-              </p>
+             <p
+  style={{
+    color: "#ff3f6c",
+    fontSize: "22px",
+  }}
+>
+  ${producto.precio}
+</p>
 
-            <button
+           <button
   onClick={() =>
-    setCarrito([...carrito, pizza])
+    setCarrito([
+      ...carrito,
+      producto
+    ])
   }
   style={{
     background: "#00d9ff",
@@ -689,13 +757,13 @@ Su pedido será preparado en breve.`;
     📍 Encuéntranos
   </h2>
 
-  <p>
-    Cunduacán, Tabasco
-  </p>
+ <p>
+  {configuracion.direccion}
+</p>
 
   <p>
-    Servicio a domicilio todos los días
-  </p>
+🕒 {configuracion.horario}
+</p>
 </section>
 
       {/* FOOTER */}
@@ -708,9 +776,13 @@ Su pedido será preparado en breve.`;
           borderTop: "1px solid rgba(255,255,255,0.1)",
         }}
       >
-        <h3>Apex Pizzas</h3>
+        <h3>
+  {configuracion.negocio}
+</h3>
 
-        <p>Cunduacán, Tabasco</p>
+       <p>
+  {configuracion.direccion}
+</p>
 
         <p>Pedidos por WhatsApp</p>
       </footer>
